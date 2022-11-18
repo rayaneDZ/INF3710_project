@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DatabaseController = void 0;
 const express_1 = require("express");
 const inversify_1 = require("inversify");
+//import * as pg from "pg";
+//import { Planrepas } from "../../../common/tables/Planrepas";
 const database_service_1 = require("../services/database.service");
 const types_1 = require("../types");
 let DatabaseController = class DatabaseController {
@@ -25,6 +27,14 @@ let DatabaseController = class DatabaseController {
     }
     get router() {
         const router = (0, express_1.Router)();
+        router.get("/planrepas", (req, res, _) => {
+            this.databaseService
+                .getAllPlanrepas()
+                .then(res => console.log(res))
+                .catch((e) => {
+                console.error(e.stack);
+            });
+        });
         return router;
     }
 };

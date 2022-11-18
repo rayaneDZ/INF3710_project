@@ -25,6 +25,25 @@ let DatabaseController = class DatabaseController {
     }
     get router() {
         const router = (0, express_1.Router)();
+        router.get("/planrepas", (req, res, _) => {
+            this.databaseService
+                .getAllPlanrepas()
+                .then((result) => {
+                const plansrepas = result.rows.map((plan) => ({
+                    numéroplan: plan.numéroplan,
+                    catégorie: plan.catégorie,
+                    fréquence: plan.fréquence,
+                    nbrpersonnes: plan.nbrpersonnes,
+                    nbrcalories: plan.nbrcalories,
+                    prix: plan.prix,
+                    numérofournisseur: plan.numérofournisseur
+                }));
+                res.json(plansrepas);
+            })
+                .catch((e) => {
+                console.error(e.stack);
+            });
+        });
         return router;
     }
 };
