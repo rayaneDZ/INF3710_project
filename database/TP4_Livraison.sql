@@ -21,20 +21,18 @@ CREATE TABLE IF NOT EXISTS Fournisseur(
 	adressefournisseur VARCHAR(70)
 );
 
-CREATE DOMAIN typesDeCatégories AS CHAR
-    CHECK (VALUE IN ('Végétarien', 'Pescétarien', 'Famille', 'Famille - Facile', 'Famille - Rapid'));
-
 CREATE TABLE IF NOT EXISTS Planrepas(
 	numéroplan CHAR(4) PRIMARY KEY, 
-	catégorie typesDeCatégories DEFAULT 'Végétarien', 
+	catégorie VARCHAR(16) DEFAULT 'Végétarien', 
 	fréquence NUMERIC(2, 0), /*Nombre de fois par semaines, maximum 14 fois par semaines (2 fois par jour)*/
 	nbrpersonnes NUMERIC(1,0), /*nombre de personnes ajouté à ce plan (de 1 à 9)*/
 	nbrcalories NUMERIC(6,0), /*nombre de calories maximum 999,999 Kcl*/
 	prix NUMERIC(6, 2) NULL, /*prix maximum 9,999.99 $*/
 	numérofournisseur CHAR(4) NOT NULL REFERENCES Fournisseur,
 	CONSTRAINT prix CHECK (prix IS NOT NULL AND prix > 0),
-	CONSTRAINT fréquence CHECK (fréquence > 0 AND fréquence =< 14),
-	CONSTRAINT nbrpersonnes CHECK (nbrpersonnes > 0 AND nbrpersonnes =< 9)
+	CONSTRAINT fréquence CHECK (fréquence > 0 AND fréquence <= 14),
+	CONSTRAINT nbrpersonnes CHECK (nbrpersonnes > 0 AND nbrpersonnes <= 9),
+	CONSTRAINT catégorie CHECK (catégorie IN ('Végétarien', 'Pescétarien', 'Famille', 'Famille - Facile', 'Famille - Rapide'))
 );
 
 CREATE TABLE IF NOT EXISTS Abonner(
@@ -106,67 +104,67 @@ CREATE TABLE IF NOT EXISTS Étape(
 	numérokitrepas CHAR(4) NOT NULL, 
 	descriptionétape VARCHAR(150), 
 	duréeétape NUMERIC(3,0), /*En minutes, de 0 à 999 minutes*/ 
-	étapeêtrecomposée CHAR(12) REFERENCES Étape,
-	FOREIGN KEY (numérokitrepas) REFERENCES Kitrepas,
-	PRIMARY KEY (numéroétape, numérokitrepas)
+	PRIMARY KEY (numéroétape, numérokitrepas),
+	étapeêtrecomposée CHAR(12),
+	FOREIGN KEY (numérokitrepas) REFERENCES Kitrepas
 );
 
-INSERT INTO Client VALUES ("C001", "Bouthiba", "Rayane", "rayane@gmail.com", "Edouard-Montpetit", "Montreal", "H3T1J4");
-INSERT INTO Client VALUES ("C002", "Apostu", "Robert", "robert@gmail.com", "Edouard-Montpetit", "Montreal", "H3T1J4");
+INSERT INTO Client VALUES ('C001', 'Bouthiba', 'Rayane', 'rayane@gmail.com', 'Edouard-Montpetit', 'Montreal', 'H3T1J4');
+INSERT INTO Client VALUES ('C002', 'Apostu', 'Robert', 'robert@gmail.com', 'Edouard-Montpetit', 'Montreal', 'H3T1J4');
 
-INSERT INTO Téléphone VALUES ("1234567891", "C001");
-INSERT INTO Téléphone VALUES ("1987654321", "C002");
+INSERT INTO Téléphone VALUES ('1234567891', 'C001');
+INSERT INTO Téléphone VALUES ('1987654321', 'C002');
 
-INSERT INTO Fournisseur VALUES ("F001", "Fournisseur 1", "123 rue Cote-des-nêiges, Montréal");
-INSERT INTO Fournisseur VALUES ("F002", "Fournisseur 2", "321 rue Cote-des-nêiges, Montréal");
+INSERT INTO Fournisseur VALUES ('F001', 'Fournisseur 1', '123 rue Cote-des-nêiges, Montréal');
+INSERT INTO Fournisseur VALUES ('F002', 'Fournisseur 2', '321 rue Cote-des-nêiges, Montréal');
 
-INSERT INTO Planrepas VALUES ("P001", "Famille", 1, 3, 500, 20, "F001");
-INSERT INTO Planrepas VALUES ("P002", "Famille", 2, 3, 500, 25, "F002");
-INSERT INTO Planrepas VALUES ("P003", "Famille - Rapide", 1, 4, 500, 32, "F001");
-INSERT INTO Planrepas VALUES ("P004", "Famille - Rapide", 3, 3, 500, 33, "F002");
-INSERT INTO Planrepas VALUES ("P005", "Famille - Facile", 3, 5, 500, 30, "F001");
-INSERT INTO Planrepas VALUES ("P006", "Famille - Facile", 5, 4, 500, 31, "F002");
-INSERT INTO Planrepas VALUES ("P007", "Végétarien", 1, 3, 500, 24, "F001");
-INSERT INTO Planrepas VALUES ("P008", "Végétarien", 3, 4, 500, 23, "F002");
-INSERT INTO Planrepas VALUES ("P009", "Pescétarien", 2, 5, 500, 23, "F001");
-INSERT INTO Planrepas VALUES ("P010", "Pescétarien", 3, 2, 500, 22, "F002");
+INSERT INTO Planrepas VALUES ('P001', 'Famille', 1, 3, 500, 20, 'F001');
+INSERT INTO Planrepas VALUES ('P002', 'Famille', 2, 3, 500, 25, 'F002');
+INSERT INTO Planrepas VALUES ('P003', 'Famille - Rapide', 1, 4, 500, 32, 'F001');
+INSERT INTO Planrepas VALUES ('P004', 'Famille - Rapide', 3, 3, 500, 33, 'F002');
+INSERT INTO Planrepas VALUES ('P005', 'Famille - Facile', 3, 5, 500, 30, 'F001');
+INSERT INTO Planrepas VALUES ('P006', 'Famille - Facile', 5, 4, 500, 31, 'F002');
+INSERT INTO Planrepas VALUES ('P007', 'Végétarien', 1, 3, 500, 24, 'F001');
+INSERT INTO Planrepas VALUES ('P008', 'Végétarien', 3, 4, 500, 23, 'F002');
+INSERT INTO Planrepas VALUES ('P009', 'Pescétarien', 2, 5, 500, 23, 'F001');
+INSERT INTO Planrepas VALUES ('P010', 'Pescétarien', 3, 2, 500, 22, 'F002');
 
-INSERT INTO Abonner VALUES ("P001", "C001", 4);
-INSERT INTO Abonner VALUES ("P002", "C002", 2);
+INSERT INTO Abonner VALUES ('P001', 'C001', 4);
+INSERT INTO Abonner VALUES ('P002', 'C002', 2);
 
-INSERT INTO Pescétarien VALUES ("P009", "Saumon");
-INSERT INTO Pescétarien VALUES ("P010", "Sardine");
+INSERT INTO Pescétarien VALUES ('P009', 'Saumon');
+INSERT INTO Pescétarien VALUES ('P010', 'Sardine');
 
-INSERT INTO Végétarien VALUES ("P007", "mexicain");
-INSERT INTO Végétarien VALUES ("P008", "méditerranéen");
+INSERT INTO Végétarien VALUES ('P007', 'mexicain');
+INSERT INTO Végétarien VALUES ('P008', 'méditerranéen');
 
-INSERT INTO Famille VALUES ("P001");
-INSERT INTO Famille VALUES ("P002");
-INSERT INTO Famille VALUES ("P003");
-INSERT INTO Famille VALUES ("P004");
-INSERT INTO Famille VALUES ("P005");
-INSERT INTO Famille VALUES ("P006");
+INSERT INTO Famille VALUES ('P001');
+INSERT INTO Famille VALUES ('P002');
+INSERT INTO Famille VALUES ('P003');
+INSERT INTO Famille VALUES ('P004');
+INSERT INTO Famille VALUES ('P005');
+INSERT INTO Famille VALUES ('P006');
 
-INSERT INTO Rapide VALUES ("P003");
-INSERT INTO Rapide VALUES ("P004");
+INSERT INTO Rapide VALUES ('P003');
+INSERT INTO Rapide VALUES ('P004');
 
-INSERT INTO Facile VALUES ("P005");
-INSERT INTO Facile VALUES ("P006");
+INSERT INTO Facile VALUES ('P005');
+INSERT INTO Facile VALUES ('P006');
 
-INSERT INTO Kitrepas VALUES ("K001", "Kit repas pour le plan P001", "P001");
-INSERT INTO Kitrepas VALUES ("K002", "Kit repas pour le plan P002", "P002");
+INSERT INTO Kitrepas VALUES ('K001', 'Kit repas pour le plan P001', 'P001');
+INSERT INTO Kitrepas VALUES ('K002', 'Kit repas pour le plan P002', 'P002');
 
-INSERT INTO Image VALUES ("I001", "Image pour le kit K001", "K001");
-INSERT INTO Image VALUES ("I002", "Image pour le kit K002", "K002");
+INSERT INTO Image VALUES ('I001', 'Image pour le kit K001', 'K001');
+INSERT INTO Image VALUES ('I002', 'Image pour le kit K002', 'K002');
 
-INSERT INTO Ingrédient VALUES ("I901", "Poisson", "Italie");
-INSERT INTO Ingrédient VALUES ("I902", "Boeuf", "Holland");
+INSERT INTO Ingrédient VALUES ('0001', 'Poisson', 'Italie');
+INSERT INTO Ingrédient VALUES ('0002', 'Boeuf', 'Holland');
 
-INSERT INTO Contenir VALUES ("I901", "K001");
-INSERT INTO Contenir VALUES ("I902", "K002");
+INSERT INTO Contenir VALUES ('0001', 'K001');
+INSERT INTO Contenir VALUES ('0002', 'K002');
 
-INSERT INTO Étape VALUES ("E001", "K001", "Cuire le poisson", 15, NULL);
-INSERT INTO Étape VALUES ("E002", "K002", "Cuire la viande", 20, NULL);
+INSERT INTO Étape VALUES ('E001', 'K001', 'Cuire le poisson', 15, NULL);
+INSERT INTO Étape VALUES ('E002', 'K002', 'Cuire la viande', 20, NULL);
 
 /*
 -- https://www.w3schools.com/sql/sql_datatypes.asp
