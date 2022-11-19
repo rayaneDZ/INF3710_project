@@ -140,6 +140,34 @@ INSERT INTO Pescétarien VALUES ("P010", "Sardine");
 INSERT INTO Végétarien VALUES ("P007", "mexicain");
 INSERT INTO Végétarien VALUES ("P008", "méditerranéen");
 
+INSERT INTO Famille VALUES ("P001");
+INSERT INTO Famille VALUES ("P002");
+INSERT INTO Famille VALUES ("P003");
+INSERT INTO Famille VALUES ("P004");
+INSERT INTO Famille VALUES ("P005");
+INSERT INTO Famille VALUES ("P006");
+
+INSERT INTO Rapide VALUES ("P003");
+INSERT INTO Rapide VALUES ("P004");
+
+INSERT INTO Facile VALUES ("P005");
+INSERT INTO Facile VALUES ("P006");
+
+INSERT INTO Kitrepas VALUES ("K001", "Kit repas pour le plan P001", "P001");
+INSERT INTO Kitrepas VALUES ("K002", "Kit repas pour le plan P002", "P002");
+
+INSERT INTO Image VALUES ("I001", "Image pour le kit K001", "K001");
+INSERT INTO Image VALUES ("I002", "Image pour le kit K002", "K002");
+
+INSERT INTO Ingrédient VALUES ("I901", "Poisson", "Italie");
+INSERT INTO Ingrédient VALUES ("I902", "Boeuf", "Holland");
+
+INSERT INTO Contenir VALUES ("I901", "K001");
+INSERT INTO Contenir VALUES ("I902", "K002");
+
+INSERT INTO Étape VALUES ("E001", "K001", "Cuire le poisson", 15, NULL);
+INSERT INTO Étape VALUES ("E002", "K002", "Cuire la viande", 20, NULL);
+
 /*
 -- https://www.w3schools.com/sql/sql_datatypes.asp
 */
