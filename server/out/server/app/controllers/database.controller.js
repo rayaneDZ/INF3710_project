@@ -44,6 +44,23 @@ let DatabaseController = class DatabaseController {
                 console.error(e.stack);
             });
         });
+        router.post("/planrepas", (req, res, _) => {
+            const plan = {
+                numéroplan: 0,
+                catégorie: req.body.catégorie,
+                fréquence: req.body.fréquence,
+                nbrpersonnes: req.body.nbrpersonnes,
+                nbrcalories: req.body.nbrcalories,
+                prix: req.body.prix,
+                numérofournisseur: req.body.numérofournisseur,
+            };
+            this.databaseService.createPlan(plan).then((result) => {
+                res.json(result.rowCount);
+            }).catch((e) => {
+                console.error(e.stack);
+                res.json(-1);
+            });
+        });
         return router;
     }
 };

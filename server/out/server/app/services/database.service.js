@@ -19,7 +19,6 @@ exports.DatabaseService = void 0;
 const inversify_1 = require("inversify");
 const pg = require("pg");
 require("reflect-metadata");
-//import { Planrepas } from "../../../common/tables/Planrepas";
 let DatabaseService = class DatabaseService {
     constructor() {
         this.connectionConfig = {
@@ -37,6 +36,19 @@ let DatabaseService = class DatabaseService {
         return __awaiter(this, void 0, void 0, function* () {
             const client = yield this.pool.connect();
             const res = yield client.query("SELECT * FROM Planrepas;");
+            client.release();
+            return res;
+        });
+    }
+    //Ajouter un plan repas
+    createPlan(planrepas) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const client = yield this.pool.connect();
+            if (!planrepas.catégorie || !planrepas.fréquence || !planrepas.nbrpersonnes || !planrepas.nbrcalories || !planrepas.prix || !planrepas.numérofournisseur)
+                throw new Error("plan repas values missing");
+            const values = [planrepas.catégorie, planrepas.fréquence, planrepas.nbrpersonnes, planrepas.nbrcalories, planrepas.prix, planrepas.numérofournisseur];
+            const queryText = `INSERT INTO Planrepas VALUES(DEFAULT, $1, $2, $3, $4, $5, $6);`;
+            const res = yield client.query(queryText, values);
             client.release();
             return res;
         });
