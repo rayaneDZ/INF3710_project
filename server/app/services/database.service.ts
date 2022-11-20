@@ -24,6 +24,14 @@ export class DatabaseService {
     return res;
   }
 
+  //Affiche tous les champs et toutes les entrées de la table Planrepas.
+  public async getAllFournisseur(): Promise<pg.QueryResult> {
+    const client = await this.pool.connect();
+    const res = await client.query("SELECT * FROM fournisseur;");
+    client.release();
+    return res;
+  }
+
   //Ajouter un plan repas
   public async createPlan(planrepas: Planrepas): Promise<pg.QueryResult> {
     const client = await this.pool.connect();

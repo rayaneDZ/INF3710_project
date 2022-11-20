@@ -25,6 +25,7 @@ let DatabaseController = class DatabaseController {
     }
     get router() {
         const router = (0, express_1.Router)();
+        // GET ALL PLAN REPAS
         router.get("/planrepas", (req, res, _) => {
             this.databaseService
                 .getAllPlanrepas()
@@ -38,12 +39,25 @@ let DatabaseController = class DatabaseController {
                     prix: plan.prix,
                     numérofournisseur: plan.numérofournisseur
                 }));
-                res.json(plansrepas);
+                //GET ALL FOURNISSEURS
+                let fournisseurs;
+                this.databaseService.getAllFournisseur()
+                    .then((result) => {
+                    fournisseurs = result.rows.map((fournisseur) => ({
+                        numérofournisseur: fournisseur.numérofournisseur,
+                        nomfournisseur: fournisseur.nomfournisseur,
+                        adressefournisseur: fournisseur.adressefournisseur
+                    }));
+                    res.json([plansrepas, fournisseurs]);
+                }).catch((e) => {
+                    console.error(e.stack);
+                });
             })
                 .catch((e) => {
                 console.error(e.stack);
             });
         });
+        // CREATE A PLAN REPAS
         router.post("/planrepas", (req, res, _) => {
             const plan = {
                 numéroplan: 0,

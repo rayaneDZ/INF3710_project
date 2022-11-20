@@ -40,6 +40,15 @@ let DatabaseService = class DatabaseService {
             return res;
         });
     }
+    //Affiche tous les champs et toutes les entrées de la table Planrepas.
+    getAllFournisseur() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const client = yield this.pool.connect();
+            const res = yield client.query("SELECT * FROM fournisseur;");
+            client.release();
+            return res;
+        });
+    }
     //Ajouter un plan repas
     createPlan(planrepas) {
         return __awaiter(this, void 0, void 0, function* () {

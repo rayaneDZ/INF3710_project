@@ -3,6 +3,7 @@ import { inject, injectable } from "inversify";
 import * as pg from "pg";
 
 import { Planrepas } from "../../../common/tables/Planrepas";
+import { Fournisseur } from "../../../common/tables/Fournisseur";
 
 import { DatabaseService } from "../services/database.service";
 import Types from "../types";
@@ -17,6 +18,7 @@ export class DatabaseController {
   public get router(): Router {
     const router: Router = Router();
 
+    // GET ALL PLAN REPAS
     router.get(
       "/planrepas",
       (req: Request, res: Response, _: NextFunction) => {
@@ -32,7 +34,20 @@ export class DatabaseController {
               prix: plan.prix,
               numérofournisseur: plan.numérofournisseur
             }));
-            res.json(plansrepas);
+            
+            //GET ALL FOURNISSEURS
+            let fournisseurs: Fournisseur[]
+            this.databaseService.getAllFournisseur()
+            .then((result: pg.QueryResult) => {
+              fournisseurs = result.rows.map((fournisseur: Fournisseur) => ({
+                numérofournisseur: fournisseur.numérofournisseur,
+                nomfournisseur: fournisseur.nomfournisseur,
+                adressefournisseur: fournisseur.adressefournisseur
+              }));
+              res.json([plansrepas, fournisseurs]);
+            }).catch((e: Error) => {
+              console.error(e.stack);
+            });
           })
           .catch((e: Error) => {
             console.error(e.stack);
@@ -40,6 +55,7 @@ export class DatabaseController {
       }
     );
 
+    // CREATE A PLAN REPAS
     router.post(
       "/planrepas",
       (req: Request, res: Response, _: NextFunction) => {
