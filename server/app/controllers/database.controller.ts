@@ -55,6 +55,26 @@ export class DatabaseController {
       }
     );
 
+    // GET ALL FOURNISSEURS
+    router.get(
+      "/fournisseurs",
+      (req: Request, res: Response, _: NextFunction) => {
+        this.databaseService
+        .getAllFournisseur()
+        .then((result: pg.QueryResult) => {
+          const fournisseurs: Fournisseur[] = result.rows.map((fournisseur: Fournisseur) => ({
+            numérofournisseur: fournisseur.numérofournisseur,
+            nomfournisseur: fournisseur.nomfournisseur,
+            adressefournisseur: fournisseur.adressefournisseur
+          }));
+
+          res.json(fournisseurs);
+
+          }).catch((e: Error) => {
+            console.error(e.stack);
+          });
+      }
+    );
     // CREATE A PLAN REPAS
     router.post(
       "/planrepas",

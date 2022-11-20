@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS Téléphone(
 	numérodetéléphone CHAR(10), 
 	numéroclient SERIAL,
 	PRIMARY KEY (numérodetéléphone, numéroclient),
-	FOREIGN KEY (numéroclient) REFERENCES Client
+	FOREIGN KEY (numéroclient) REFERENCES Client ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Fournisseur(
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS Planrepas(
 	nbrpersonnes NUMERIC(1,0), /*nombre de personnes ajouté à ce plan (de 1 à 9)*/
 	nbrcalories NUMERIC(6,0), /*nombre de calories maximum 999,999 Kcl*/
 	prix NUMERIC(6, 2) NULL, /*prix maximum 9,999.99 $*/
-	numérofournisseur SERIAL NOT NULL REFERENCES Fournisseur,
+	numérofournisseur SERIAL NOT NULL REFERENCES Fournisseur ON DELETE CASCADE,
 	CONSTRAINT prix CHECK (prix IS NOT NULL AND prix > 0),
 	CONSTRAINT fréquence CHECK (fréquence > 0 AND fréquence <= 14),
 	CONSTRAINT nbrpersonnes CHECK (nbrpersonnes > 0 AND nbrpersonnes <= 9),
@@ -40,49 +40,49 @@ CREATE TABLE IF NOT EXISTS Abonner(
 	numéroclient SERIAL, 
 	durée NUMERIC(3, 0) NOT NULL, /*Nombres de semaines, jusqu'à 999 semaines*/
 	PRIMARY KEY (numéroplan, numéroclient),
-	FOREIGN KEY (numéroplan) REFERENCES Planrepas,
-	FOREIGN KEY (numéroclient) REFERENCES Client
+	FOREIGN KEY (numéroplan) REFERENCES Planrepas ON DELETE CASCADE,
+	FOREIGN KEY (numéroclient) REFERENCES Client ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Pescétarien(
 	numéroplan SERIAL PRIMARY KEY,
 	typepoisson VARCHAR(40),
-	FOREIGN KEY (numéroplan) REFERENCES Planrepas
+	FOREIGN KEY (numéroplan) REFERENCES Planrepas ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Végétarien(
 	numéroplan SERIAL PRIMARY KEY,
 	typederepas VARCHAR(60),
-	FOREIGN KEY (numéroplan) REFERENCES Planrepas
+	FOREIGN KEY (numéroplan) REFERENCES Planrepas ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Famille(
 	numéroplan SERIAL PRIMARY KEY,
-	FOREIGN KEY (numéroplan) REFERENCES Planrepas
+	FOREIGN KEY (numéroplan) REFERENCES Planrepas ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Rapide (
 	numéroplan SERIAL PRIMARY KEY,
 	tempsdepréparation NUMERIC(3,0), /*En minutes, de 0 à 999 minutes*/ 
-	FOREIGN KEY (numéroplan) REFERENCES Famille
+	FOREIGN KEY (numéroplan) REFERENCES Famille ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Facile(
 	numéroplan SERIAL PRIMARY KEY,
 	nbringrédients NUMERIC(2,0), 
-	FOREIGN KEY (numéroplan) REFERENCES Famille
+	FOREIGN KEY (numéroplan) REFERENCES Famille ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Kitrepas(
 	numérokitrepas SERIAL PRIMARY KEY,
 	description VARCHAR(100),
-	numéroplan SERIAL NOT NULL REFERENCES Planrepas	
+	numéroplan SERIAL NOT NULL REFERENCES Planrepas ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Image(
 	numéroimage SERIAL PRIMARY KEY, 
 	données VARCHAR(40), 
-	numérokitrepas SERIAL NOT NULL REFERENCES Kitrepas
+	numérokitrepas SERIAL NOT NULL REFERENCES Kitrepas ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Ingrédient(
@@ -95,8 +95,8 @@ CREATE TABLE IF NOT EXISTS Contenir(
 	numéroingrédient SERIAL, 
 	numérokitrepas SERIAL,
 	PRIMARY KEY (numéroingrédient, numérokitrepas),
-	FOREIGN KEY(numéroingrédient) REFERENCES Ingrédient,
-	FOREIGN KEY(numérokitrepas) REFERENCES Kitrepas
+	FOREIGN KEY(numéroingrédient) REFERENCES Ingrédient ON DELETE CASCADE,
+	FOREIGN KEY(numérokitrepas) REFERENCES Kitrepas ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS Étape(
@@ -106,7 +106,7 @@ CREATE TABLE IF NOT EXISTS Étape(
 	duréeétape NUMERIC(3,0), /*En minutes, de 0 à 999 minutes*/ 
 	PRIMARY KEY (numéroétape, numérokitrepas),
 	étapeêtrecomposée INTEGER,
-	FOREIGN KEY (numérokitrepas) REFERENCES Kitrepas
+	FOREIGN KEY (numérokitrepas) REFERENCES Kitrepas ON DELETE CASCADE
 );
 
 INSERT INTO Client VALUES (DEFAULT, 'Bouthiba', 'Rayane', 'rayane@gmail.com', 'Edouard-Montpetit', 'Montreal', 'H3T1J4');
