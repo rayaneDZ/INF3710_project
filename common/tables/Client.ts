@@ -1,9 +1,9 @@
 export interface Client{
-    numéroclient: String;
-	nomclient: String;
-	prénomclient: String;
-	adressecourrielclient: String; 
-	rueclient: String; 
-	villeclient: String; 
-	codepostalclient: String;
+    numéroclient: number;
+	nomclient: string;
+	prénomclient: string;
+	adressecourrielclient: string; 
+	rueclient: string; 
+	villeclient: string; 
+	codepostalclient: string;
 }

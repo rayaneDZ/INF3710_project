@@ -1,5 +1,5 @@
 export interface Fournisseur{
-    numérofournisseur: String;
-    nomfournisseur: String;
-    adressefournisseur: String;
+    numérofournisseur: number;
+    nomfournisseur: string;
+    adressefournisseur: string;
 }
