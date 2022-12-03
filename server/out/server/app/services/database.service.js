@@ -31,7 +31,7 @@ let DatabaseService = class DatabaseService {
         };
         this.pool = new pg.Pool(this.connectionConfig);
     }
-    //Affiche tous les champs et toutes les entrées de la table Planrepas.
+    //Affiche tous les champs et toutes les entrees de la table Planrepas.
     getAllPlanrepas() {
         return __awaiter(this, void 0, void 0, function* () {
             const client = yield this.pool.connect();
@@ -40,7 +40,7 @@ let DatabaseService = class DatabaseService {
             return res;
         });
     }
-    //Affiche tous les champs et toutes les entrées de la table Planrepas.
+    //Affiche tous les champs et toutes les entrees de la table Planrepas.
     getAllFournisseur() {
         return __awaiter(this, void 0, void 0, function* () {
             const client = yield this.pool.connect();
@@ -53,9 +53,9 @@ let DatabaseService = class DatabaseService {
     createPlan(planrepas) {
         return __awaiter(this, void 0, void 0, function* () {
             const client = yield this.pool.connect();
-            if (!planrepas.catégorie || !planrepas.fréquence || !planrepas.nbrpersonnes || !planrepas.nbrcalories || !planrepas.prix || !planrepas.numérofournisseur)
+            if (!planrepas.categorie || !planrepas.frequence || !planrepas.nbrpersonnes || !planrepas.nbrcalories || !planrepas.prix || !planrepas.numerofournisseur)
                 throw new Error("plan repas values missing");
-            const values = [planrepas.catégorie, planrepas.fréquence, planrepas.nbrpersonnes, planrepas.nbrcalories, planrepas.prix, planrepas.numérofournisseur];
+            const values = [planrepas.categorie, planrepas.frequence, planrepas.nbrpersonnes, planrepas.nbrcalories, planrepas.prix, planrepas.numerofournisseur];
             const queryText = `INSERT INTO Planrepas VALUES(DEFAULT, $1, $2, $3, $4, $5, $6);`;
             const res = yield client.query(queryText, values);
             client.release();

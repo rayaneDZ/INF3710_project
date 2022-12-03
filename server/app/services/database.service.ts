@@ -16,7 +16,7 @@ export class DatabaseService {
 
   public pool: pg.Pool = new pg.Pool(this.connectionConfig);
 
-  //Affiche tous les champs et toutes les entrées de la table Planrepas.
+  //Affiche tous les champs et toutes les entrees de la table Planrepas.
   public async getAllPlanrepas(): Promise<pg.QueryResult> {
     const client = await this.pool.connect();
     const res = await client.query("SELECT * FROM Planrepas;");
@@ -24,7 +24,7 @@ export class DatabaseService {
     return res;
   }
 
-  //Affiche tous les champs et toutes les entrées de la table Planrepas.
+  //Affiche tous les champs et toutes les entrees de la table Planrepas.
   public async getAllFournisseur(): Promise<pg.QueryResult> {
     const client = await this.pool.connect();
     const res = await client.query("SELECT * FROM fournisseur;");
@@ -36,10 +36,10 @@ export class DatabaseService {
   public async createPlan(planrepas: Planrepas): Promise<pg.QueryResult> {
     const client = await this.pool.connect();
 
-    if (!planrepas.catégorie || !planrepas.fréquence || !planrepas.nbrpersonnes || !planrepas.nbrcalories || !planrepas.prix || !planrepas.numérofournisseur)
+    if (!planrepas.categorie || !planrepas.frequence || !planrepas.nbrpersonnes || !planrepas.nbrcalories || !planrepas.prix || !planrepas.numerofournisseur)
       throw new Error("plan repas values missing");
 
-    const values = [planrepas.catégorie, planrepas.fréquence, planrepas.nbrpersonnes, planrepas.nbrcalories, planrepas.prix, planrepas.numérofournisseur];
+    const values = [planrepas.categorie, planrepas.frequence, planrepas.nbrpersonnes, planrepas.nbrcalories, planrepas.prix, planrepas.numerofournisseur];
     const queryText: string = `INSERT INTO Planrepas VALUES(DEFAULT, $1, $2, $3, $4, $5, $6);`;
 
     const res = await client.query(queryText, values);

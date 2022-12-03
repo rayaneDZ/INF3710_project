@@ -25,6 +25,7 @@ let Server = class Server {
     }
     init() {
         this.application.app.set("port", this.appPort);
+        this.application.app.disable('etag');
         this.server = http.createServer(this.application.app);
         this.server.listen(this.appPort);
         this.server.on("error", (error) => this.onError(error));

@@ -11,7 +11,7 @@ import Types from "../types";
 @injectable()
 export class DatabaseController {
   public constructor(
-    // @ts-ignore -- À ENLEVER LORSQUE L'IMPLÉMENTATION EST TERMINÉE
+    // @ts-ignore -- À ENLEVER LORSQUE L'IMPLeMENTATION EST TERMINeE
     @inject(Types.DatabaseService) private readonly databaseService: DatabaseService
   ) {}
 
@@ -26,13 +26,13 @@ export class DatabaseController {
           .getAllPlanrepas()
           .then((result: pg.QueryResult) => {
             const plansrepas: Planrepas[] = result.rows.map((plan: Planrepas) => ({
-              numéroplan: plan.numéroplan,
-              catégorie: plan.catégorie,
-              fréquence: plan.fréquence,
+              numeroplan: plan.numeroplan,
+              categorie: plan.categorie,
+              frequence: plan.frequence,
               nbrpersonnes: plan.nbrpersonnes,
               nbrcalories: plan.nbrcalories,
               prix: plan.prix,
-              numérofournisseur: plan.numérofournisseur
+              numerofournisseur: plan.numerofournisseur
             }));
             
             //GET ALL FOURNISSEURS
@@ -40,10 +40,11 @@ export class DatabaseController {
             this.databaseService.getAllFournisseur()
             .then((result: pg.QueryResult) => {
               fournisseurs = result.rows.map((fournisseur: Fournisseur) => ({
-                numérofournisseur: fournisseur.numérofournisseur,
+                numerofournisseur: fournisseur.numerofournisseur,
                 nomfournisseur: fournisseur.nomfournisseur,
                 adressefournisseur: fournisseur.adressefournisseur
               }));
+              console.log([plansrepas, fournisseurs]);
               res.json([plansrepas, fournisseurs]);
             }).catch((e: Error) => {
               console.error(e.stack);
@@ -63,7 +64,7 @@ export class DatabaseController {
         .getAllFournisseur()
         .then((result: pg.QueryResult) => {
           const fournisseurs: Fournisseur[] = result.rows.map((fournisseur: Fournisseur) => ({
-            numérofournisseur: fournisseur.numérofournisseur,
+            numerofournisseur: fournisseur.numerofournisseur,
             nomfournisseur: fournisseur.nomfournisseur,
             adressefournisseur: fournisseur.adressefournisseur
           }));
@@ -80,13 +81,13 @@ export class DatabaseController {
       "/planrepas",
       (req: Request, res: Response, _: NextFunction) => {
         const plan: Planrepas = {
-          numéroplan: 0,
-          catégorie: req.body.catégorie,
-          fréquence: req.body.fréquence,
+          numeroplan: 0,
+          categorie: req.body.categorie,
+          frequence: req.body.frequence,
           nbrpersonnes: req.body.nbrpersonnes,
           nbrcalories: req.body.nbrcalories,
           prix: req.body.prix,
-          numérofournisseur: req.body.numérofournisseur,
+          numerofournisseur: req.body.numerofournisseur,
         };
 
         this.databaseService.createPlan(plan).then((result: pg.QueryResult) => {

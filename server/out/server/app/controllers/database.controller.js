@@ -19,7 +19,7 @@ const database_service_1 = require("../services/database.service");
 const types_1 = require("../types");
 let DatabaseController = class DatabaseController {
     constructor(
-    // @ts-ignore -- À ENLEVER LORSQUE L'IMPLÉMENTATION EST TERMINÉE
+    // @ts-ignore -- À ENLEVER LORSQUE L'IMPLeMENTATION EST TERMINeE
     databaseService) {
         this.databaseService = databaseService;
     }
@@ -31,23 +31,24 @@ let DatabaseController = class DatabaseController {
                 .getAllPlanrepas()
                 .then((result) => {
                 const plansrepas = result.rows.map((plan) => ({
-                    numéroplan: plan.numéroplan,
-                    catégorie: plan.catégorie,
-                    fréquence: plan.fréquence,
+                    numeroplan: plan.numeroplan,
+                    categorie: plan.categorie,
+                    frequence: plan.frequence,
                     nbrpersonnes: plan.nbrpersonnes,
                     nbrcalories: plan.nbrcalories,
                     prix: plan.prix,
-                    numérofournisseur: plan.numérofournisseur
+                    numerofournisseur: plan.numerofournisseur
                 }));
                 //GET ALL FOURNISSEURS
                 let fournisseurs;
                 this.databaseService.getAllFournisseur()
                     .then((result) => {
                     fournisseurs = result.rows.map((fournisseur) => ({
-                        numérofournisseur: fournisseur.numérofournisseur,
+                        numerofournisseur: fournisseur.numerofournisseur,
                         nomfournisseur: fournisseur.nomfournisseur,
                         adressefournisseur: fournisseur.adressefournisseur
                     }));
+                    console.log([plansrepas, fournisseurs]);
                     res.json([plansrepas, fournisseurs]);
                 }).catch((e) => {
                     console.error(e.stack);
@@ -57,16 +58,31 @@ let DatabaseController = class DatabaseController {
                 console.error(e.stack);
             });
         });
+        // GET ALL FOURNISSEURS
+        router.get("/fournisseurs", (req, res, _) => {
+            this.databaseService
+                .getAllFournisseur()
+                .then((result) => {
+                const fournisseurs = result.rows.map((fournisseur) => ({
+                    numerofournisseur: fournisseur.numerofournisseur,
+                    nomfournisseur: fournisseur.nomfournisseur,
+                    adressefournisseur: fournisseur.adressefournisseur
+                }));
+                res.json(fournisseurs);
+            }).catch((e) => {
+                console.error(e.stack);
+            });
+        });
         // CREATE A PLAN REPAS
         router.post("/planrepas", (req, res, _) => {
             const plan = {
-                numéroplan: 0,
-                catégorie: req.body.catégorie,
-                fréquence: req.body.fréquence,
+                numeroplan: 0,
+                categorie: req.body.categorie,
+                frequence: req.body.frequence,
                 nbrpersonnes: req.body.nbrpersonnes,
                 nbrcalories: req.body.nbrcalories,
                 prix: req.body.prix,
-                numérofournisseur: req.body.numérofournisseur,
+                numerofournisseur: req.body.numerofournisseur,
             };
             this.databaseService.createPlan(plan).then((result) => {
                 res.json(result.rowCount);

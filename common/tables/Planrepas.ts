@@ -1,9 +1,9 @@
 export interface Planrepas{
-    numéroplan: number;
-    catégorie: string;
-    fréquence: number;
+    numeroplan: number;
+    categorie: string;
+    frequence: number;
     nbrpersonnes: number;
     nbrcalories: number;
     prix: number;
-    numérofournisseur: string;
+    numerofournisseur: string;
 }

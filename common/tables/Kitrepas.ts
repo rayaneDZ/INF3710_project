@@ -1,5 +1,5 @@
 export interface Kitrepas{
-    numérokitrepas: number;
+    numerokitrepas: number;
     description: string;
-    numéroplan: string;
+    numeroplan: string;
 }

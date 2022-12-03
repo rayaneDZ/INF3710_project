@@ -14,7 +14,7 @@ export class Server {
 
   public init(): void {
     this.application.app.set("port", this.appPort);
-
+    this.application.app.disable('etag');
     this.server = http.createServer(this.application.app);
 
     this.server.listen(this.appPort);

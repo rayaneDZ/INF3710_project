@@ -1,0 +1,34 @@
+<div id="hotel">
+  <h1>Hotels</h1>
+
+  <div class="divider"></div>
+
+  <table
+    id="ht"
+    align="center"
+    border="1"
+    width="1000"
+    class="table-striped table-hover"
+  >
+    <thead class="header">
+      <th class="contentCell">Numéro plan</th>
+      <th class="contentCell">Catégorie</th>
+      <th class="contentCell">Fréquence</th>
+      <th class="actionCell">Nombre de personnes</th>
+      <th class="actionCell">Nombre de calories</th>
+      <th class="actionCell">Prix</th>
+      <th class="actionCell">Numéro fournisseur</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let plan of plans">
+        <td class="contentCell">{{ plan.numeroplan }}</td>
+        <td class="contentCell">{{ plan.categorie }}</td>
+        <td class="contentCell">{{ plan.frequence }}</td>
+        <td class="contentCell">{{ plan.nbrpersonnes }}</td>
+        <td class="contentCell">{{ plan.nbrcalories }}</td>
+        <td class="contentCell">{{ plan.prix }}</td>
+        <td class="contentCell">{{ plan.numerofournisseur }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

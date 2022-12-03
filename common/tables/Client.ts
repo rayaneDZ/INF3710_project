@@ -1,7 +1,7 @@
 export interface Client{
-    numéroclient: number;
+    numeroclient: number;
 	nomclient: string;
-	prénomclient: string;
+	prenomclient: string;
 	adressecourrielclient: string; 
 	rueclient: string; 
 	villeclient: string; 
