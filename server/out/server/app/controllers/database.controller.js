@@ -39,22 +39,15 @@ let DatabaseController = class DatabaseController {
                     prix: plan.prix,
                     numerofournisseur: plan.numerofournisseur
                 }));
-                //GET ALL FOURNISSEURS
-                let fournisseurs;
-                this.databaseService.getAllFournisseur()
-                    .then((result) => {
-                    fournisseurs = result.rows.map((fournisseur) => ({
-                        numerofournisseur: fournisseur.numerofournisseur,
-                        nomfournisseur: fournisseur.nomfournisseur,
-                        adressefournisseur: fournisseur.adressefournisseur
-                    }));
-                    console.log([plansrepas, fournisseurs]);
-                    res.json([plansrepas, fournisseurs]);
-                }).catch((e) => {
-                    console.error(e.stack);
-                });
-            })
-                .catch((e) => {
+                res.json(plansrepas);
+            }).catch((e) => {
+                console.error(e.stack);
+            });
+        });
+        router.get("/nombredeplans", (req, res, _) => {
+            this.databaseService.getNumberofPlans().then((result) => {
+                res.json(result.rows[0].count);
+            }).catch((e) => {
                 console.error(e.stack);
             });
         });
@@ -74,7 +67,7 @@ let DatabaseController = class DatabaseController {
             });
         });
         // CREATE A PLAN REPAS
-        router.post("/planrepas", (req, res, _) => {
+        router.post("/planrepas/insert", (req, res, _) => {
             const plan = {
                 numeroplan: 0,
                 categorie: req.body.categorie,

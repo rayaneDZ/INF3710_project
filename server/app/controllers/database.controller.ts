@@ -34,28 +34,23 @@ export class DatabaseController {
               prix: plan.prix,
               numerofournisseur: plan.numerofournisseur
             }));
-            
-            //GET ALL FOURNISSEURS
-            let fournisseurs: Fournisseur[]
-            this.databaseService.getAllFournisseur()
-            .then((result: pg.QueryResult) => {
-              fournisseurs = result.rows.map((fournisseur: Fournisseur) => ({
-                numerofournisseur: fournisseur.numerofournisseur,
-                nomfournisseur: fournisseur.nomfournisseur,
-                adressefournisseur: fournisseur.adressefournisseur
-              }));
-              console.log([plansrepas, fournisseurs]);
-              res.json([plansrepas, fournisseurs]);
-            }).catch((e: Error) => {
-              console.error(e.stack);
-            });
-          })
-          .catch((e: Error) => {
+            res.json(plansrepas);
+          }).catch((e: Error) => {
             console.error(e.stack);
           });
       }
     );
 
+    router.get(
+      "/nombredeplans",
+      (req: Request, res: Response, _: NextFunction) => {
+        this.databaseService.getNumberofPlans().then((result: pg.QueryResult) => {
+          res.json(result.rows[0].count);
+        }).catch((e: Error) => {
+          console.error(e.stack);
+        });
+      }
+    )
     // GET ALL FOURNISSEURS
     router.get(
       "/fournisseurs",
@@ -78,7 +73,7 @@ export class DatabaseController {
     );
     // CREATE A PLAN REPAS
     router.post(
-      "/planrepas",
+      "/planrepas/insert",
       (req: Request, res: Response, _: NextFunction) => {
         const plan: Planrepas = {
           numeroplan: 0,

@@ -40,6 +40,15 @@ let DatabaseService = class DatabaseService {
             return res;
         });
     }
+    //retourne le nombre de plans de repas
+    getNumberofPlans() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const client = yield this.pool.connect();
+            const res = yield client.query("SELECT COUNT(*) FROM Planrepas;");
+            client.release();
+            return res;
+        });
+    }
     //Affiche tous les champs et toutes les entrees de la table Planrepas.
     getAllFournisseur() {
         return __awaiter(this, void 0, void 0, function* () {

@@ -24,6 +24,14 @@ export class DatabaseService {
     return res;
   }
 
+  //retourne le nombre de plans de repas
+  public async getNumberofPlans(): Promise<pg.QueryResult> {
+    const client = await this.pool.connect();
+    const res = await client.query("SELECT COUNT(*) FROM Planrepas;");
+    client.release();
+    return res;
+  }
+
   //Affiche tous les champs et toutes les entrees de la table Planrepas.
   public async getAllFournisseur(): Promise<pg.QueryResult> {
     const client = await this.pool.connect();

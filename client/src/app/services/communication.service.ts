@@ -22,10 +22,25 @@ export class CommunicationService {
     this._listeners.next(filterBy);
   }
 
-  public getPlans(): Observable<[Planrepas[], Fournisseur[]]> {
+  public getPlans(): Observable<Planrepas[]> {
     return this.http
-      .get<[Planrepas[], Fournisseur[]]>(this.BASE_URL + "/planrepas")
-      .pipe(catchError(this.handleError<[Planrepas[], Fournisseur[]]>("getPlans")));
+      .get<Planrepas[]>(this.BASE_URL + "/planrepas")
+      .pipe(catchError(this.handleError<Planrepas[]>("getPlans")));
+  }
+  public getNombreDePlans(): Observable<any> {
+    return this.http
+      .get<any>(this.BASE_URL + "/nombredeplans")
+      .pipe(catchError(this.handleError<any>("getNombreDePlans")));
+  }
+  public getFournisseurs(): Observable<Fournisseur[]> {
+    return this.http
+      .get<Fournisseur[]>(this.BASE_URL + "/fournisseurs")
+      .pipe(catchError(this.handleError<Fournisseur[]>("getFournisseurs")));
+  }
+  public insertPlanrepas(plan: Planrepas): Observable<number> {
+    return this.http
+      .post<number>(this.BASE_URL + "/planrepas/insert", plan)
+      .pipe(catchError(this.handleError<number>("insertPlanrepas")));
   }
 
   // À DÉCOMMENTER ET À UTILISER LORSQUE VOTRE COMMUNICATION EST IMPLÉMENTÉE

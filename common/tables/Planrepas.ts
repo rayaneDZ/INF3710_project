@@ -5,5 +5,5 @@ export interface Planrepas{
     nbrpersonnes: number;
     nbrcalories: number;
     prix: number;
-    numerofournisseur: string;
+    numerofournisseur: number;
 }
