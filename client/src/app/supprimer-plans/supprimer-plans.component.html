@@ -1,0 +1,56 @@
+<div id="hotel">
+  <h1>Supprimer Des Plans Repas</h1>
+  <p>Clicker sur un plan pour le supprimer</p>
+  <div class="divider"></div>
+
+  <table mat-table [dataSource]="plans" class="mat-elevation-z8 demo-table">
+    <!-- numero plan Column -->
+    <ng-container matColumnDef="numeroplan">
+      <th mat-header-cell *matHeaderCellDef>Numéro plan</th>
+      <td mat-cell *matCellDef="let plans">{{ plans.numeroplan }}</td>
+    </ng-container>
+
+    <!-- catégorie Column -->
+    <ng-container matColumnDef="categorie">
+      <th mat-header-cell *matHeaderCellDef>Catégorie</th>
+      <td mat-cell *matCellDef="let plans">{{ plans.categorie }}</td>
+    </ng-container>
+
+    <!-- fréquence Column -->
+    <ng-container matColumnDef="frequence">
+      <th mat-header-cell *matHeaderCellDef>Fréquence</th>
+      <td mat-cell *matCellDef="let plans">{{ plans.frequence }}</td>
+    </ng-container>
+
+    <!-- nombre de personnes Column -->
+    <ng-container matColumnDef="nbrpersonnes">
+      <th mat-header-cell *matHeaderCellDef>Nombre de personnes</th>
+      <td mat-cell *matCellDef="let plans">{{ plans.nbrpersonnes }}</td>
+    </ng-container>
+
+    <!-- nombre de calories Column -->
+    <ng-container matColumnDef="nbrcalories">
+      <th mat-header-cell *matHeaderCellDef>Nombre de calories</th>
+      <td mat-cell *matCellDef="let plans">{{ plans.nbrcalories }}</td>
+    </ng-container>
+
+    <!-- prix Column -->
+    <ng-container matColumnDef="prix">
+      <th mat-header-cell *matHeaderCellDef>Prix</th>
+      <td mat-cell *matCellDef="let plans">{{ plans.prix }}</td>
+    </ng-container>
+
+    <!-- prix Column -->
+    <ng-container matColumnDef="numerofournisseur">
+      <th mat-header-cell *matHeaderCellDef>Numéro fournisseur</th>
+      <td mat-cell *matCellDef="let plans">{{ plans.numerofournisseur }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      (click)="clickedRows = row; clicked()"
+      *matRowDef="let row; columns: displayedColumns"
+    ></tr>
+  </table>
+</div>

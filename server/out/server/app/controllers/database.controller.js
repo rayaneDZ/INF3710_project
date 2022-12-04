@@ -84,6 +84,17 @@ let DatabaseController = class DatabaseController {
                 res.json(-1);
             });
         });
+        router.post("/planrepas/supprimer/:numeroplan", (req, res, _) => {
+            const numeroplan = parseInt(req.params.numeroplan);
+            this.databaseService
+                .deletePlan(numeroplan)
+                .then((result) => {
+                res.json(result.rowCount);
+            })
+                .catch((e) => {
+                console.error(e.stack);
+            });
+        });
         return router;
     }
 };

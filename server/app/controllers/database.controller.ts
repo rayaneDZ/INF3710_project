@@ -94,6 +94,20 @@ export class DatabaseController {
       }
     );
 
+    router.post(
+      "/planrepas/supprimer/:numeroplan",
+      (req: Request, res: Response, _: NextFunction) => {
+        const numeroplan: number = parseInt(req.params.numeroplan);
+        this.databaseService
+          .deletePlan(numeroplan)
+          .then((result: pg.QueryResult) => {
+            res.json(result.rowCount);
+          })
+          .catch((e: Error) => {
+            console.error(e.stack);
+          });
+      }
+    );
     return router;
   }
 }

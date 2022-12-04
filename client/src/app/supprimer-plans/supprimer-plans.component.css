@@ -1,0 +1,42 @@
+#hotel {
+    background-color: #e2e2e2;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    padding: 3%;
+}
+
+#ht {
+    background-color: white;
+    text-align: left;
+}
+
+.divider {
+    border-bottom: 1px solid #9A75F0;
+    margin: auto;
+    width: 50%;
+    margin-bottom: 25px;
+}
+
+.header {
+    font-size: 18px;
+    color: #9A75F0;
+}
+
+.demo-table {
+    width: 100%;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+    border-bottom: 1px solid transparent;
+    border-top: 1px solid transparent;
+    cursor: pointer;
+}
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    background-color: #9A75F0;
+    color: #9A75F0;
+}
+
+.demo-row-is-clicked {
+    font-weight: bold;
+}

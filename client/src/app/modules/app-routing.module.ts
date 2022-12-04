@@ -4,11 +4,13 @@ import { RouterModule, Routes } from "@angular/router";
 import { AppComponent } from "../app.component";
 import { TousLesPlansComponent } from '../tous-les-plans/tous-les-plans.component';
 import { AjouterPlansComponent } from '../ajouter-plans/ajouter-plans.component';
+import { SupprimerPlansComponent } from '../supprimer-plans/supprimer-plans.component';
 
 const routes: Routes = [
   { path: "app", component: AppComponent },
   { path: "tous", component: TousLesPlansComponent },
-  { path: "ajouter", component: AjouterPlansComponent }
+  { path: "ajouter", component: AjouterPlansComponent },
+  { path: "supprimer", component: SupprimerPlansComponent }
 ];
 
 @NgModule({

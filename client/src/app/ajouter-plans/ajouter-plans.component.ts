@@ -55,9 +55,6 @@ export class AjouterPlansComponent implements OnInit {
   }
 
   public checkNewPlan(): void{
-    console.log("1 = ", this.selectedFournisseur);
-    console.log("2 = ",parseInt(this.newPlanPrix.nativeElement.innerText))
-    
     try{
       parseInt(this.newPlanPrix.nativeElement.innerText);
     }catch(e){

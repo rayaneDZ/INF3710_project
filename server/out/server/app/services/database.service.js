@@ -71,6 +71,15 @@ let DatabaseService = class DatabaseService {
             return res;
         });
     }
+    deletePlan(numeroplan) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const client = yield this.pool.connect();
+            const query = `DELETE FROM Planrepas WHERE numeroplan = '${numeroplan}';`;
+            const res = yield client.query(query);
+            client.release();
+            return res;
+        });
+    }
 };
 DatabaseService = __decorate([
     (0, inversify_1.injectable)()

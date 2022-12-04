@@ -54,4 +54,14 @@ export class DatabaseService {
     client.release();
     return res;
   }
+
+  public async deletePlan(numeroplan: number): Promise<pg.QueryResult> {
+
+    const client = await this.pool.connect();
+    const query = `DELETE FROM Planrepas WHERE numeroplan = '${numeroplan}';`;
+
+    const res = await client.query(query);
+    client.release();
+    return res;
+  }
 }

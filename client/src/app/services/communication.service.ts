@@ -42,6 +42,11 @@ export class CommunicationService {
       .post<number>(this.BASE_URL + "/planrepas/insert", plan)
       .pipe(catchError(this.handleError<number>("insertPlanrepas")));
   }
+  public deletePlan(numeroplan: string): Observable<number> {
+    return this.http
+      .post<number>(this.BASE_URL + "/planrepas/supprimer/" + numeroplan, {})
+      .pipe(catchError(this.handleError<number>("deletePlan")));
+  }
 
   // À DÉCOMMENTER ET À UTILISER LORSQUE VOTRE COMMUNICATION EST IMPLÉMENTÉE
   private handleError<T>(
