@@ -108,6 +108,32 @@ export class DatabaseController {
           });
       }
     );
+
+    router.put(
+      "/planrepas/modifier",
+      (req: Request, res: Response, _: NextFunction) => {
+        const plan: Planrepas = {
+          numeroplan: req.body.numeroplan,
+          categorie: req.body.categorie,
+          frequence: req.body.frequence,
+          nbrpersonnes: req.body.nbrpersonnes,
+          nbrcalories: req.body.nbrcalories,
+          prix: req.body.prix,
+          numerofournisseur: req.body.numerofournisseur,
+        };
+        console.log("server side plan = ", plan)
+        this.databaseService
+          .updatePlan(plan)
+          .then((result: pg.QueryResult) => {
+            res.json(result.rowCount);
+          })
+          .catch((e: Error) => {
+            console.error(e.stack);
+            res.json(-1);
+          });
+      }
+    );
+
     return router;
   }
 }

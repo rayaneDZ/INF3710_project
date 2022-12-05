@@ -95,6 +95,27 @@ let DatabaseController = class DatabaseController {
                 console.error(e.stack);
             });
         });
+        router.put("/planrepas/modifier", (req, res, _) => {
+            const plan = {
+                numeroplan: req.body.numeroplan,
+                categorie: req.body.categorie,
+                frequence: req.body.frequence,
+                nbrpersonnes: req.body.nbrpersonnes,
+                nbrcalories: req.body.nbrcalories,
+                prix: req.body.prix,
+                numerofournisseur: req.body.numerofournisseur,
+            };
+            console.log("server side plan = ", plan);
+            this.databaseService
+                .updatePlan(plan)
+                .then((result) => {
+                res.json(result.rowCount);
+            })
+                .catch((e) => {
+                console.error(e.stack);
+                res.json(-1);
+            });
+        });
         return router;
     }
 };

@@ -48,6 +48,11 @@ export class CommunicationService {
       .pipe(catchError(this.handleError<number>("deletePlan")));
   }
 
+  public updatePlan(plan: Planrepas): Observable<number> {
+    return this.http
+      .put<number>(this.BASE_URL + "/planrepas/modifier", plan)
+      .pipe(catchError(this.handleError<number>("updatePlan")));
+  }
   // À DÉCOMMENTER ET À UTILISER LORSQUE VOTRE COMMUNICATION EST IMPLÉMENTÉE
   private handleError<T>(
     request: string,

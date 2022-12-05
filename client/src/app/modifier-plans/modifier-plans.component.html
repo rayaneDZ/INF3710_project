@@ -1,0 +1,101 @@
+<div id="hotel">
+  <h1>Modifier Des Plans Repas</h1>
+  <div class="divider"></div>
+
+  <select (change)="onChange($event.target.value)" id="selection">
+    <option *ngFor="let numero of numerodesplans">
+      {{ numero }}
+    </option>
+  </select>
+
+  <table
+    id="ht"
+    align="center"
+    border="1"
+    width="1000"
+    class="table-striped table-hover"
+  >
+    <thead class="header">
+      <th class="contentCell">Numéro plan</th>
+      <th class="contentCell">Catégorie</th>
+      <th class="contentCell">Fréquence</th>
+      <th class="actionCell">Nombre de personnes</th>
+      <th class="actionCell">Nombre de calories</th>
+      <th class="actionCell">Prix</th>
+      <th class="actionCell">Numéro fournisseur</th>
+    </thead>
+    <tbody>
+      <tr class="blank_row">
+        <td class="contentCell">{{ selectedPlan.numeroplan }}</td>
+
+        <td class="contentCell" contenteditable="true">
+          <select #newPlanCat>
+            <option value="Végétarien">Végétarien</option>
+            <option value="Pescétarien">Pescétarien</option>
+            <option value="Famille">Famille</option>
+            <option value="Famille - Facile">Famille - Facile</option>
+            <option value="Famille - Rapide">Famille - Rapide</option>
+          </select>
+        </td>
+
+        <td class="contentCell" contenteditable="true" placeholder="choisire">
+          <select #newPlanFreq>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+          </select>
+        </td>
+
+        <td class="contentCell" contenteditable="true" placeholder="choisire">
+          <select #newPlanNbPersonnes>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+          </select>
+        </td>
+
+        <td
+          class="contentCell"
+          contenteditable="true"
+          placeholder="500"
+          #newPlanNbCalories
+        ></td>
+
+        <td
+          class="contentCell"
+          contenteditable="true"
+          placeholder="20"
+          #newPlanPrix
+        ></td>
+
+        <td class="contentCell" contenteditable="true" placeholder="choisire">
+          <select [(ngModel)]="selectedFournisseur">
+            <option *ngFor="let fournisseur of fournisseurs">
+              {{ fournisseur.numerofournisseur }}
+            </option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button type="button" class="btn" (click)="checkNewPlan()" routerLink="/tous">
+    Modifier
+  </button>
+</div>

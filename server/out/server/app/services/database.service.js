@@ -80,6 +80,23 @@ let DatabaseService = class DatabaseService {
             return res;
         });
     }
+    updatePlan(newplan) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const client = yield this.pool.connect();
+            let toUpdateValues = [];
+            toUpdateValues.push(`categorie = '${newplan.categorie}'`);
+            toUpdateValues.push(`frequence = ${newplan.frequence}`);
+            toUpdateValues.push(`nbrpersonnes = ${newplan.nbrpersonnes}`);
+            toUpdateValues.push(`nbrcalories = ${newplan.nbrcalories}`);
+            toUpdateValues.push(`prix = ${newplan.prix}`);
+            toUpdateValues.push(`numerofournisseur = ${newplan.numerofournisseur}`);
+            const query = `UPDATE Planrepas SET ${toUpdateValues.join(", ")} WHERE numeroplan = ${newplan.numeroplan};`;
+            console.log("QUERY = ", query);
+            const res = yield client.query(query);
+            client.release();
+            return res;
+        });
+    }
 };
 DatabaseService = __decorate([
     (0, inversify_1.injectable)()

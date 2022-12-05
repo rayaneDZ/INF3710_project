@@ -64,4 +64,23 @@ export class DatabaseService {
     client.release();
     return res;
   }
+
+  public async updatePlan(newplan: Planrepas): Promise<pg.QueryResult> {
+
+    const client = await this.pool.connect();
+
+    let toUpdateValues = [];
+    toUpdateValues.push(`categorie = '${newplan.categorie}'`);
+    toUpdateValues.push(`frequence = ${newplan.frequence}`);
+    toUpdateValues.push(`nbrpersonnes = ${newplan.nbrpersonnes}`);
+    toUpdateValues.push(`nbrcalories = ${newplan.nbrcalories}`);
+    toUpdateValues.push(`prix = ${newplan.prix}`);
+    toUpdateValues.push(`numerofournisseur = ${newplan.numerofournisseur}`);
+    
+    const query = `UPDATE Planrepas SET ${toUpdateValues.join(", ")} WHERE numeroplan = ${newplan.numeroplan};`;
+    console.log("QUERY = ", query)
+    const res = await client.query(query);
+    client.release();
+    return res;
+  }
 }
