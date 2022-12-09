@@ -25,14 +25,14 @@ CREATE TABLE IF NOT EXISTS Planrepas(
 	numeroplan SERIAL PRIMARY KEY, 
 	categorie VARCHAR(16) DEFAULT 'Végétarien', 
 	frequence NUMERIC(2, 0), /*Nombre de fois par semaines, maximum 14 fois par semaines (2 fois par jour)*/
-	nbrpersonnes NUMERIC(1,0), /*nombre de personnes ajoute à ce plan (de 1 à 9)*/
+	nbrpersonnes NUMERIC(1,0), /*nombre de personnes ajouté à ce plan (de 1 à 9)*/
 	nbrcalories NUMERIC(6,0), /*nombre de calories maximum 999,999 Kcl*/
 	prix NUMERIC(6, 2) NULL, /*prix maximum 9,999.99 $*/
 	numerofournisseur SERIAL NOT NULL REFERENCES Fournisseur ON DELETE CASCADE,
 	CONSTRAINT prix CHECK (prix IS NOT NULL AND prix > 0),
 	CONSTRAINT frequence CHECK (frequence > 0 AND frequence <= 14),
 	CONSTRAINT nbrpersonnes CHECK (nbrpersonnes > 0 AND nbrpersonnes <= 9),
-	CONSTRAINT categorie CHECK (categorie IN ('Végétarien', 'Pescétarien', 'Famille', 'Famille - Facile', 'Famille - Rapide'))
+	CONSTRAINT categorie CHECK (categorie IN ('Végétarien', 'Pescétarien', 'Famille', 'Famille - Facile', 'Famille - Rapide', 'Cétogène'))
 );
 
 CREATE TABLE IF NOT EXISTS Abonner(
@@ -86,16 +86,16 @@ CREATE TABLE IF NOT EXISTS Image(
 );
 
 CREATE TABLE IF NOT EXISTS Ingredient(
-	numeroingredient SERIAL PRIMARY KEY, 
-	nomingredient VARCHAR(20), 
-	paysingredient VARCHAR(20)
+	numeroIngredient SERIAL PRIMARY KEY, 
+	nomIngredient VARCHAR(20), 
+	paysIngredient VARCHAR(20)
 );
 
 CREATE TABLE IF NOT EXISTS Contenir(
-	numeroingredient SERIAL, 
+	numeroIngredient SERIAL, 
 	numerokitrepas SERIAL,
-	PRIMARY KEY (numeroingredient, numerokitrepas),
-	FOREIGN KEY(numeroingredient) REFERENCES Ingredient ON DELETE CASCADE,
+	PRIMARY KEY (numeroIngredient, numerokitrepas),
+	FOREIGN KEY(numeroIngredient) REFERENCES Ingredient ON DELETE CASCADE,
 	FOREIGN KEY(numerokitrepas) REFERENCES Kitrepas ON DELETE CASCADE
 );
 
@@ -105,70 +105,87 @@ CREATE TABLE IF NOT EXISTS Etape(
 	descriptionetape VARCHAR(150), 
 	dureeetape NUMERIC(3,0), /*En minutes, de 0 à 999 minutes*/ 
 	PRIMARY KEY (numeroetape, numerokitrepas),
-	etapeêtrecomposee INTEGER,
+	etapeêtrecomposée INTEGER,
 	FOREIGN KEY (numerokitrepas) REFERENCES Kitrepas ON DELETE CASCADE
 );
 
+--Client: numeroclient, nomclient, prenomclient, adressecourriel, rue, ville, codepostal
 INSERT INTO Client VALUES (DEFAULT, 'Bouthiba', 'Rayane', 'rayane@gmail.com', 'Edouard-Montpetit', 'Montreal', 'H3T1J4');
 INSERT INTO Client VALUES (DEFAULT, 'Apostu', 'Robert', 'robert@gmail.com', 'Edouard-Montpetit', 'Montreal', 'H3T1J4');
+INSERT INTO Client VALUES (DEFAULT, 'Martel', 'Allo', 'sylvain@gmail.com', '123 rue Sherbrooke', 'Montreal', 'H3T1J4');
+INSERT INTO Client VALUES (DEFAULT, 'Rousseau', 'elise', 'rousseau@gmail.com', '123 rue Sherbrooke', 'Montreal', 'H3T1J4');
+INSERT INTO Client VALUES (DEFAULT, 'Thor', 'ulir', 'rousseau@gmail.com', '123 rue Sherbrooke', 'Montreal', 'H3T1J4');
 
-INSERT INTO Telephone VALUES ('1234567891', 1);
+
+INSERT INTO Telephone VALUES ('1234567891', 1); -- numerotelephone, numeroclient
 INSERT INTO Telephone VALUES ('1987654321', 2);
 
+--Fournisseur: numerofournisseur, nomfournisseur, adressefournisseur
 INSERT INTO Fournisseur VALUES (DEFAULT, 'Fournisseur 1', '123 rue Cote-des-nêiges, Montréal');
-INSERT INTO Fournisseur VALUES (DEFAULT, 'Fournisseur 2', '321 rue Cote-des-nêiges, Montréal');
+INSERT INTO Fournisseur VALUES (DEFAULT, 'AB Transport', '321 rue Cote-des-nêiges, Montréal');
+INSERT INTO Fournisseur VALUES (DEFAULT, 'QC Transport', '234 rue Sherbrooke, Montréal');
+INSERT INTO Fournisseur VALUES (DEFAULT, 'Benjamin', 'Montreal');
+INSERT INTO Fournisseur VALUES (DEFAULT, NULL, '12 rue Sherbrooke E, Montréal');
+INSERT INTO Fournisseur VALUES (DEFAULT, NULL, '34 rue Sherbrooke E, Montréal');
 
-INSERT INTO Planrepas VALUES (DEFAULT, 'Famille', 1, 3, 500, 20, 1);
-INSERT INTO Planrepas VALUES (DEFAULT, 'Famille', 2, 3, 500, 25, 2);
-INSERT INTO Planrepas VALUES (DEFAULT, 'Famille - Rapide', 1, 4, 500, 32, 1);
-INSERT INTO Planrepas VALUES (DEFAULT, 'Famille - Rapide', 3, 3, 500, 33, 2);
+--Planrepas: numeroplan, categorie, frequence, nbrpersonnes, nbrcalories, prix, numerofournisseur
+INSERT INTO Planrepas VALUES (DEFAULT, 'Famille', 1, 3, 500, 15, 1);
+INSERT INTO Planrepas VALUES (DEFAULT, 'Cétogène', 2, 3, 500, 25, 2);
+INSERT INTO Planrepas VALUES (DEFAULT, 'Cétogène', 3, 3, 500, 38, 1);
+INSERT INTO Planrepas VALUES (DEFAULT, 'Famille - Rapide', 1, 4, 500, 32, 3);
+INSERT INTO Planrepas VALUES (DEFAULT, 'Famille - Rapide', 3, 3, 500, 33, 3);
 INSERT INTO Planrepas VALUES (DEFAULT, 'Famille - Facile', 3, 5, 500, 30, 1);
 INSERT INTO Planrepas VALUES (DEFAULT, 'Famille - Facile', 5, 4, 500, 31, 2);
 INSERT INTO Planrepas VALUES (DEFAULT, 'Végétarien', 1, 3, 500, 24, 1);
-INSERT INTO Planrepas VALUES (DEFAULT, 'Végétarien', 3, 4, 500, 23, 2);
+INSERT INTO Planrepas VALUES (DEFAULT, 'Végétarien', 3, 4, 500, 23, 3);
 INSERT INTO Planrepas VALUES (DEFAULT, 'Pescétarien', 2, 5, 500, 23, 1);
-INSERT INTO Planrepas VALUES (DEFAULT, 'Pescétarien', 3, 2, 500, 22, 2);
+INSERT INTO Planrepas VALUES (DEFAULT, 'Pescétarien', 3, 2, 500, 22, 3);
+INSERT INTO Planrepas VALUES (DEFAULT, 'Végétarien', 3, 4, 500, 15, 4);
+INSERT INTO Planrepas VALUES (DEFAULT, 'Famille - Rapide', 2, 5, 500, 50, 4);
+INSERT INTO Planrepas VALUES (DEFAULT, 'Pescétarien', 3, 2, 500, 100, 4);
 
-INSERT INTO Abonner VALUES (1, 1, 4);
+INSERT INTO Abonner VALUES (1, 1, 4);  -- numeroplan, numeroclient, duree
 INSERT INTO Abonner VALUES (2, 2, 2);
+INSERT INTO Abonner VALUES (3, 3, 5);
 
-INSERT INTO Pescetarien VALUES (9, 'Saumon');
+INSERT INTO Pescetarien VALUES (9, 'Saumon'); -- numeroplan, typepoisson
 INSERT INTO Pescetarien VALUES (10, 'Sardine');
 
-INSERT INTO Vegetarien VALUES (7, 'mexicain');
+INSERT INTO Vegetarien VALUES (7, 'mexicain'); -- numeroplan, typederepas
 INSERT INTO Vegetarien VALUES (8, 'méditerranéen');
 
-INSERT INTO Famille VALUES (1);
-INSERT INTO Famille VALUES (2);
-INSERT INTO Famille VALUES (3);
-INSERT INTO Famille VALUES (4);
-INSERT INTO Famille VALUES (5);
-INSERT INTO Famille VALUES (6);
+INSERT INTO Famille VALUES (DEFAULT); -- numeroplan
+INSERT INTO Famille VALUES (DEFAULT);
+INSERT INTO Famille VALUES (DEFAULT);
+INSERT INTO Famille VALUES (DEFAULT);
+INSERT INTO Famille VALUES (DEFAULT);
+INSERT INTO Famille VALUES (DEFAULT);
 
-INSERT INTO Rapide VALUES (3);
+INSERT INTO Rapide VALUES (3); -- numeroplan, temps de prép
 INSERT INTO Rapide VALUES (4);
 
-INSERT INTO Facile VALUES (5);
+INSERT INTO Facile VALUES (5); --numeroplan, nbringredients
 INSERT INTO Facile VALUES (6);
 
-INSERT INTO Kitrepas VALUES (DEFAULT, 'Kit repas pour le plan 1', 1);
+INSERT INTO Kitrepas VALUES (DEFAULT, 'Kit repas pour le plan 1', 1); -- numerokitrepas, description, numeroplan
 INSERT INTO Kitrepas VALUES (DEFAULT, 'Kit repas pour le plan 2', 2);
+INSERT INTO Kitrepas VALUES (DEFAULT, 'Kit repas pour le plan 2', 3);
 
-INSERT INTO Image VALUES (DEFAULT, 'Image pour le kit 1', 1);
+INSERT INTO Image VALUES (DEFAULT, 'Image pour le kit 1', 1); --numeroimage, donnees, numerokitrepas
 INSERT INTO Image VALUES (DEFAULT, 'Image pour le kit 2', 2);
 
-INSERT INTO Ingredient VALUES (DEFAULT, 'Poisson', 'Italie');
+INSERT INTO Ingredient VALUES (DEFAULT, 'Poisson', 'Italie'); -- #Ingredient, nomingérdient, paysIngredient
+INSERT INTO Ingredient VALUES (DEFAULT, 'Pate', 'Italie');
 INSERT INTO Ingredient VALUES (DEFAULT, 'Boeuf', 'Holland');
+INSERT INTO Ingredient VALUES (DEFAULT, 'Poulet', 'Holland');
+INSERT INTO Ingredient VALUES (DEFAULT, 'Oeuf', 'Holland');
+INSERT INTO Ingredient VALUES (DEFAULT, 'Parmesan', 'Espagne');
 
-INSERT INTO Contenir VALUES (1, 1);
+INSERT INTO Contenir VALUES (1, 1); -- #Ingredient, numerokitrepas
 INSERT INTO Contenir VALUES (2, 2);
 
-INSERT INTO Etape VALUES (DEFAULT, 1, 'Cuire le poisson', 15, NULL);
+INSERT INTO Etape VALUES (DEFAULT, 1, 'Cuire le poisson', 15, NULL); --numeroEtape, numérikitrepas, descriptionrepas, dureeEtape, etrecomposéde
 INSERT INTO Etape VALUES (default, 2, 'Cuire la viande', 20, NULL);
-
-/*
--- https://www.w3schools.com/sql/sql_datatypes.asp
-*/
 
 /*
 DROP TABLE Client CASCADE;
@@ -187,3 +204,4 @@ DROP TABLE Etape CASCADE;
 DROP TABLE Contenir CASCADE;
 DROP TABLE Abonner CASCADE;
 */
+
