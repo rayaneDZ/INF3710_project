@@ -17,21 +17,34 @@ export class AjouterPlansComponent implements OnInit {
   @ViewChild("newPlanNbCalories") newPlanNbCalories: ElementRef;
   @ViewChild("newPlanPrix") newPlanPrix: ElementRef;
 
-  public nombredeplans: any;
+  public plans: Planrepas[] = [];
   public numeronewplan: number;
   public fournisseurs: Fournisseur[] =  [];
   selectedFournisseur: string;
-  constructor(private communicationService: CommunicationService, router: Router) { }
+  public feedback: string;
+  constructor(private communicationService: CommunicationService, private router: Router) { }
 
   ngOnInit(): void {
     this.getNombreDePlans();
     this.getFournisseurs();
   }
 
+  public getPlans(nombre: number): void{
+    this.communicationService.getPlans().subscribe((plans: Planrepas[]) => {
+      this.plans = plans;
+      let highest = 0;
+      for(let i = 0; i< nombre; i++){
+        if (plans[i].numeroplan > highest){
+          highest = plans[i].numeroplan
+        }
+      }
+      this.numeronewplan = highest + 1;
+    });
+  }
+
   public getNombreDePlans(): void{
     this.communicationService.getNombreDePlans().subscribe((nombre: any) => {
-      this.nombredeplans = nombre;
-      this.numeronewplan = parseInt(this.nombredeplans) + 1;
+      this.getPlans(nombre);
     });
   }
   public getFournisseurs(): void{
@@ -45,28 +58,32 @@ export class AjouterPlansComponent implements OnInit {
       categorie: this.newPlanCat.nativeElement.value,
       frequence: this.newPlanFreq.nativeElement.value,
       nbrpersonnes: this.newPlanNbPersonnes.nativeElement.value,
-      nbrcalories: this.newPlanNbCalories.nativeElement.innerText,
+      nbrcalories: parseInt(this.newPlanNbCalories.nativeElement.innerText),
       prix: parseInt(this.newPlanPrix.nativeElement.innerText),
       numerofournisseur: parseInt(this.selectedFournisseur)
     }
+    console.log(newplan)
     this.communicationService.insertPlanrepas(newplan).subscribe((res: number) => {
       console.log("res = ", res);
     });
   }
 
   public checkNewPlan(): void{
-    try{
-      parseInt(this.newPlanPrix.nativeElement.innerText);
-    }catch(e){
-      console.log("please enter a valid price");
-    }
-    if(parseInt(this.newPlanPrix.nativeElement.innerText) < 0 || parseInt(this.newPlanPrix.nativeElement.innerText) > 9999.99){
-      console.log("enter a price >= 0 and <= 9,999.99");
+
+    if(this.newPlanPrix.nativeElement.innerText == "" || parseInt(this.newPlanPrix.nativeElement.innerText) === NaN){
+      this.feedback = "please enter a valid price"
+    }else if(this.newPlanNbCalories.nativeElement.innerText == "" || parseInt(this.newPlanNbCalories.nativeElement.innerText) === NaN){
+      this.feedback = "please enter a valid calories number"
     }else{
-      if(this.selectedFournisseur != undefined){
-        this.ajouterPlan();
+      if(parseInt(this.newPlanPrix.nativeElement.innerText) < 0 || parseInt(this.newPlanPrix.nativeElement.innerText) > 9999.99){
+        this.feedback = "enter a price >= 0 and <= 9,999.99"
       }else{
-        console.log("please select a fournisseur")
+        if(this.selectedFournisseur != undefined){
+          this.ajouterPlan();
+          this.router.navigate(["/tous"])
+        }else{
+          this.feedback = "please select a fournisseur"
+        }
       }
     }
   }
